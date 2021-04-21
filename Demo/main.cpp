@@ -8,6 +8,7 @@
 RpcDigitalOut myled1(LED1,"myled1");
 RpcDigitalOut myled2(LED2,"myled2");
 RpcDigitalOut myled3(LED3,"myled3");
+DigitalOut myLED3(LED3);
 BufferedSerial pc(USBTX, USBRX);
 void LEDBlink(Arguments *in, Reply *out);
 RPCFunction rpcLED(&LEDBlink, "LEDBlink");
@@ -33,13 +34,13 @@ int main() {
 
 // Make sure the method takes in Arguments and Reply objects.
 void LEDBlink (Arguments *in, Reply *out)   {
-    bool success = true;
+    //bool success = true;
     x++;
 
     // Have code here to call another RPC function to wake up specific led or close it.
-    char buffer[200], outbuf[256];
+    //char buffer[200], outbuf[256];
     char strings[20];
-    int led = 3;
+    /*int led = 3;
     if (x % 2) {
         sprintf(strings, "/myled%d/write %d", led, 1);
     } else {
@@ -51,5 +52,13 @@ void LEDBlink (Arguments *in, Reply *out)   {
         out->putData(buffer);
     } else {
         out->putData("Failed to execute LED control.");
+    }*/
+    if (x % 2) {
+        myLED3 = 0;
+        sprintf(strings, "/myled%d/write %d", 3, 0);
+    } else {
+        myLED3 = 1;
+        sprintf(strings, "/myled%d/write %d", 3, 1);
     }
+    out->putData(strings);
 }
